@@ -2,7 +2,8 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected function _initView()
+	/*
+    protected function _initView()
     {
         //ini_set('date.timezone', 'America/Buenos_Aires');
         // initialize smarty view
@@ -20,12 +21,24 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         return $view;
     }
+    */
     
-    protected function _initDoctype()
+    protected function _initPlaceholders()
     {
         $this->bootstrap('view');
         $view = $this->getResource('view');
         $view->doctype('XHTML1_STRICT');
+
+        
+        // Set the initial title and separator:
+        $view->headTitle('My Site')
+             ->setSeparator(' :: ');
+
+        // Set the initial stylesheet:
+        $view->headLink()->prependStylesheet('/styles/site.css');
+
+        // Set the initial JS to load:
+        $view->headScript()->prependFile('/js/site.js');
     }
 
 /*
