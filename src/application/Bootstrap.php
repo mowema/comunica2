@@ -2,6 +2,52 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    protected function _initPhpConfig() {
+    	$this->_front = Zend_Controller_Front::getInstance ();
+    	$this->_reg = Zend_Registry::getInstance ();
+    	//$this->_config = new Zend_Config_Ini ( APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV );
+    	$app = $this->getApplication ();
+    	$this->_config = $app->getOptions ();
+    	$this->_reg->set ( 'config', $this->_config );
+    }
+    public function _initConfig() {
+    
+    	$this->view = new Zend_View ();
+    	$this->view->addHelperPath ( APPLICATION_PATH . '/default/views/helpers', 'My_Helpers' );
+    
+    	// indico la vista a utilizar con el viewrenderer
+    	$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper ( 'ViewRenderer' );
+    	$viewRenderer->setView ( $this->view );
+    	return $this->view;
+    }
+    
+    protected function _initHead(){
+    	$this->view->doctype ( 'XHTML1_TRANSITIONAL' );
+    	$this->view->headMeta()
+    	->appendHttpEquiv('Content-Type', 'text/html; charset="UTF-8"')
+    	->appendHttpEquiv('expires', '-1')
+    	->appendName('Keywords', 'las palabras separadas por comas')
+    	->appendName('Description', 'descripci—n de la p‡gina')
+    	->appendName('robots', 'all')
+    	//->appendName('Language', 'es')
+    	;
+    	$this->view->headTitle()->setSeparator(' - ');
+    	$this->view->headTitle('AMdAr');
+    
+    }
+    
+    protected function _initLinks() {
+		$this->view->headLink ()->appendStylesheet ( '/styles/reset.css' );
+		$this->view->headLink ()->appendStylesheet ( '/styles/text.css' );
+		$this->view->headLink ()->appendStylesheet ( '/styles/960.css' );
+		$this->view->headLink ()->appendStylesheet ( '/js/datatables/css/demo_page.css' );
+		$this->view->headLink ()->appendStylesheet ( '/js/datatables/css/demo_table.css' );
+	}
+	protected function _initScripts() {
+		$this->view->headScript ()->offsetSetFile ( 110, 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js' );
+		$this->view->headScript ()->offsetSetFile ( 115, '/js/datatables/js/jquery.dataTables.min.js' );
+		$this->view->headScript ()->offsetSetFile ( 116, '/js/datatables/js/jquery.dataTables.custom.js' );
+	}
 	/*
     protected function _initView()
     {
