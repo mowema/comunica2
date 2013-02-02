@@ -10,8 +10,8 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->hello = 'Hello Smarty 3';
-        $this->view->title = 'Smarty 3 on Zend Framework';
+        $this->view->hello = '';
+        $this->view->title = 'title';
     }
 
 
