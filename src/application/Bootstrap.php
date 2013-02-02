@@ -41,7 +41,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headScript()->prependFile('/js/site.js');
     }
 
-/*
+
     protected function _initZFDebug()
     {
         if (APPLICATION_ENV !== 'development') {
@@ -49,14 +49,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         }
         $autoloader = Zend_Loader_Autoloader::getInstance();
         $autoloader->registerNamespace('ZFDebug');
-        $autoloader->registerNamespace('Danceric');
+        //$autoloader->registerNamespace('Danceric');
         
-        $this->bootstrap('doctrine');
+        //$this->bootstrap('doctrine');
         
         $options = array(
             'plugins' => array(
                 'Variables',
-                'Danceric_Controller_Plugin_Debug_Plugin_Doctrine',
+                //'Danceric_Controller_Plugin_Debug_Plugin_Doctrine',
                 'Exception',
                 'html','file'
             )
@@ -68,7 +68,42 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $fc = $this->getResource('frontController');
         $fc->registerPlugin($debug);
     }
-*/
+
+    protected function _initZIDS() 
+    {
+        // Setup autoloader
+        $autoloader = Zend_Loader_Autoloader::getInstance();
+        $autoloader->registerNamespace('ZIDS');
+            
+        // Make sure that the front controller is initialized
+        $this->bootstrap('FrontController');
+
+        // Retrieve the front controller
+        $front = $this->getResource('FrontController');
+
+        // Register ZIDS if options have been specified
+        if ($this->hasOption('zids'))
+        {
+            // Create ZIDS instance
+            $zids = new ZIDS_Plugin_Ids($this->getOption('zids'));
+
+            // create a logger (ADAPT THIS TO YOUR NEEDS!)
+            $logger = new Zend_Log ();
+            $filter = new Zend_Log_Filter_Priority(Zend_Log::ERR);
+            $writer = new Zend_Log_Writer_Stream ("../data/logs/log.txt");
+            $logger->addWriter ( $writer );
+
+            // register all plugins that you need
+            $zids->registerPlugin(new ZIDS_Plugin_ActionPlugin_Ignore());
+            $zids->registerPlugin(new ZIDS_Plugin_ActionPlugin_Email());
+            $zids->registerPlugin(new ZIDS_Plugin_ActionPlugin_Log($logger));
+            $zids->registerPlugin(new ZIDS_Plugin_ActionPlugin_Redirect());
+
+            // Register ZIDS with the front controller
+            $front->registerPlugin($zids);
+        }
+    }
+
     
 }
 
