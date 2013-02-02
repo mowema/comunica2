@@ -21,29 +21,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	return $this->view;
     }
     
-		protected function _initHead(){
-		$this->view->doctype ( 'XHTML1_TRANSITIONAL' );
-		$this->view->headMeta()
-						->appendHttpEquiv('Content-Type', 'text/html; charset="UTF-8"') 
-						->appendHttpEquiv('expires', '-1')
-						->appendName('Keywords', 'las palabras separadas por comas') 
-		 				->appendName('Description', 'descripci—n de la p‡gina')
-		 				->appendName('robots', 'all')
-						//->appendName('Language', 'es')
-						; 
-		$this->view->headTitle()->setSeparator(' - '); 
-		$this->view->headTitle('Evento'); 
-
-	}
-    
-    protected function _initLinks() {
-		$this->view->headLink ()->appendStylesheet ( '/assets/css/bootstrap.css' );
 		
-	}
-	protected function _initScripts() {
-		$this->view->headScript()->offsetSetFile ( 210, '/assets/js/jquery.js' );
+    
+    	
 	
-	}
 	
 	/*
     protected function _initView()
@@ -65,25 +46,44 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $view;
     }
     
-    
+    */
     protected function _initPlaceholders()
     {
+        
         $this->bootstrap('view');
         $view = $this->getResource('view');
         $view->doctype('XHTML1_STRICT');
-
+        $view->headMeta()
+	        ->appendHttpEquiv('Content-Type', 'text/html; charset="UTF-8"')
+	        ->appendHttpEquiv('expires', '-1')
+	        ->appendName('Keywords', 'las palabras separadas por comas')
+	        ->appendName('Description', 'descripci—n de la p‡gina')
+	        ->appendName('robots', 'all');
+        //->appendName('Language', 'es')
         
         // Set the initial title and separator:
-        $view->headTitle('My Site')
+        $view->headTitle('Evento')
              ->setSeparator(' :: ');
 
         // Set the initial stylesheet:
-        $view->headLink()->prependStylesheet('/styles/site.css');
+        $view->headLink()->appendStylesheet ( '/assets/css/bootstrap.css' )
+        	->appendStylesheet('/assets/css/bootstrap-responsive.css');
+        //$view->headLink()->prependStylesheet('/styles/site.css');
 
         // Set the initial JS to load:
-        $view->headScript()->prependFile('/js/site.js');
+
+        $view->headScript()->offsetSetFile ( 210, '/assets/js/jquery.js' );
+        $view->headScript()->prependFile('/assets/js/bootstrap-alert.js');
+        /*$view->headScript()->prependFile('/assets/js/bootstrap-transition.js');
+        $view->headScript()->prependFile('/assets/js/bootstrap-transition.js');
+        $view->headScript()->prependFile('/assets/js/bootstrap-transition.js');
+        $view->headScript()->prependFile('/assets/js/bootstrap-transition.js');
+        $view->headScript()->prependFile('/assets/js/bootstrap-transition.js');
+        $view->headScript()->prependFile('/assets/js/bootstrap-transition.js');*/
+        	
+        //$view->headScript()->prependFile('/js/site.js');
     }
-*/
+
 
     protected function _initZFDebug()
     {
